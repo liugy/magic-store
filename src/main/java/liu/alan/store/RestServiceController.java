@@ -1,6 +1,4 @@
 package liu.alan.store;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
@@ -9,18 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class RestServiceController {
 	@Autowired
 	private InventoryModel inventoryModel;
-
-    @RequestMapping("/")
-    public String index() {
-        return "Greetings from Alan Liu!";
-    }
     
     @GetMapping("/inventory.json")
     public ProductAmount[] inventory(){
