@@ -16,33 +16,29 @@ var ShoppingCart = React.createClass({
     
     handleSubmit: function(e){
         e.preventDefault();
-        console.log(this.shoppingItems);
-        this.props.onBuy(this.shoppingItems);
+        this.props.onBuy(this.state.shoppingItems);
+        this.setState(this.getInitialState());
     },
-    shoppingItems:[],
     modifyAmount: function(changingItem){
-        if (this.shoppingItems.length==0){
-            var newData = this.shoppingItems;
-            this.props.products.map(function(product){
-                var newItem = {};
-                newItem.name = product.name;
-                if(newItem.name == changingItem.name){
-                    newItem.amount=changingItem.amount;
-                }else{
-                    newItem.amount=0;   
-                }
-                newData.push(newItem);
-            });
-        }else{
-            this.shoppingItems.map(function(item){
-                if(item.name == changingItem.name){
-                    item.amount=changingItem.amount;
-                }
-            });            
-        }
+        var newShoppingItems = this.state.shoppingItems;
+        newShoppingItems.map(function(item){
+            if(item.name == changingItem.name){
+                item.amount=changingItem.amount;
+            }
+        });        
+    },
+    clearShoppingItems: function(){
+        var ret = [];
+        this.props.products.map(function(product){
+            var newItem = {};
+            newItem.name = product.name;
+            newItem.amount=0;   
+            ret.push(newItem);
+        });
+        return ret;
     },
     getInitialState: function() {
-        return {data: []};
+        return {shoppingItems: this.clearShoppingItems()};
     },
     render: function() {
         var me = this;
