@@ -1,4 +1,4 @@
-package hello;
+package liu.alan.store;
 
 import java.util.Arrays;
 

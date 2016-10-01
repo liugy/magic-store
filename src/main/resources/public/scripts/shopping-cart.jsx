@@ -1,12 +1,22 @@
 var ShoppingCartRow = React.createClass({
     handleAmountChange: function(e){
-        this.props.onAmountChange({name: e.target.name, amount:e.target.value});
+        if (isNaturalNumber(e.target.value)){
+            this.setState(this.getInitialState());
+            this.props.onAmountChange({name: e.target.name, amount:e.target.value});                
+        }else{
+            this.setState({errorMsg: "Only nature number allowed here."});
+            this.props.onAmountChange({name: e.target.name, amount:0});                
+        }
+    },
+    getInitialState: function() {
+        return {errorMsg: ""};
     },
     render: function(){
        return(
         <tr>
             <td><span> {this.props.productName} </span></td>
             <td><input type="text" placeholder="input amount" name={this.props.productName} onChange={this.handleAmountChange} /></td>
+            <td>{this.state.errorMsg}</td>
         </tr>
        );
     } 
