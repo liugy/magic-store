@@ -2,7 +2,26 @@
 
 var MyStore = React.createClass({
     getInitialState: function() {
-        return {nextPage: "shopping", inventory:this.props.inventory, buyingItems:[]};
+        return {nextPage: "shopping", inventory:[], buyingItems:[]};
+    },
+    componentDidMount: function() {
+        this.loadInventoryFromServer();
+    },
+
+    loadInventoryFromServer: function() {
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                this.setState({nextPage: "shopping", inventory:data, buyingItems:this.state.buyingItems});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+                this.setState({nextPage: "error", inventory: this.state.inventory, buyingItems:this.state.buyingItems, errorTitle: "Server Error", errorMessage:err.toString()});
+    
+            }.bind(this)
+        });
     },
     calculateInventory: function(currentInventory, buyingItems){
         if(!buyingItems || buyingItems.lenght==0){
@@ -52,22 +71,8 @@ var MyStore = React.createClass({
     }
 });
 
-
-var INVENTORY = [
-  {amount: 49, name: 'Football'},
-  {amount: 9, name: 'Baseball'},
-  {amount: 29, name: 'Basketball'},
-  {amount: 99, name: 'iPod Touch'},
-  {amount: 399, name: 'iPhone 5'},
-  {amount: 199, name: 'Nexus 7'}
-];
  
-var BUYINGITEMS = [
-  {amount: 49, name: 'Football'},
-  {amount: 9, name: 'Baseball'},
-  {amount: 199, name: 'Nexus 7'}
-];
 ReactDOM.render(
-  <MyStore inventory={INVENTORY} />,
+  <MyStore url="/inventory.json"/>,
   document.getElementById('container')
 );

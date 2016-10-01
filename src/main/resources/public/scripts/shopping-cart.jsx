@@ -26,37 +26,38 @@ var ShoppingCart = React.createClass({
     
     handleSubmit: function(e){
         e.preventDefault();
-        this.props.onBuy(this.state.shoppingItems);
-        this.setState(this.getInitialState());
+        this.props.onBuy(this.shoppingItems);
+        this.clearShoppingItems();
     },
     modifyAmount: function(changingItem){
-        var newShoppingItems = this.state.shoppingItems;
-        newShoppingItems.map(function(item){
+        this.shoppingItems.map(function(item){
             if(item.name == changingItem.name){
                 item.amount=changingItem.amount;
             }
         });        
     },
     clearShoppingItems: function(){
-        var ret = [];
+        this.shoppingItems = [];
         this.props.products.map(function(product){
             var newItem = {};
             newItem.name = product.name;
             newItem.amount=0;   
-            ret.push(newItem);
-        });
-        return ret;
+            this.shoppingItems.push(newItem);
+        }.bind(this));
+        console.log(this.shoppingItems);
     },
-    getInitialState: function() {
-        return {shoppingItems: this.clearShoppingItems()};
+    componentDidMount: function() {
+        this.clearShoppingItems();
+    },
+    componentDidUpdate(prevProps, prevState){
+        this.clearShoppingItems();
     },
     render: function() {
-        var me = this;
         var cartItems = this.props.products.map(function(product) {
             return (
-                <ShoppingCartRow productName={product.name} onAmountChange={me.modifyAmount} key={product.name}/>
+                <ShoppingCartRow productName={product.name} onAmountChange={this.modifyAmount} key={product.name}/>
             );
-        });
+        }.bind(this));
 
         return (
             <form onSubmit={this.handleSubmit}>

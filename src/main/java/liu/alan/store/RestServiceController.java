@@ -15,7 +15,7 @@ public class RestServiceController {
     public String index() {
         return "Greetings from Alan Liu!";
     }
-    @GetMapping("/inventory")
+    @GetMapping("/inventory.json")
     public ProductInventory[] inventory(){
     	List<ProductInventory> productList = new ArrayList<ProductInventory>();
     	productList.add(new ProductInventory("Item A", 100));

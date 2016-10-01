@@ -1,5 +1,6 @@
 var Shopping = React.createClass({
     onBuy: function(shoppingItems){
+        console.log(shoppingItems);
         if (this.isInventoryEnough(shoppingItems)){
             this.props.onShoped(shoppingItems);
         }else{
