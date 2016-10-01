@@ -44,7 +44,6 @@ var ShoppingCart = React.createClass({
             newItem.amount=0;   
             this.shoppingItems.push(newItem);
         }.bind(this));
-        console.log(this.shoppingItems);
     },
     componentDidMount: function() {
         this.clearShoppingItems();
